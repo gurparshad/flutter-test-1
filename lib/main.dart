@@ -36,12 +36,19 @@ class _MyHomePageState extends State<MyHomePage> {
   getRandomNumber() async {
     var response =
         await Dio().get('https://csrng.net/csrng/csrng.php?min=1&max=1000');
-    randomList.add(response.data[0]['random']);
+    randomList.add(response.data[0]['random'].toString());
     print(randomList);
     setState(() {
       randomNum = response.data[0]['random'].toString();
     });
     return response.data[0]['random'];
+  }
+
+  Widget myItmes() {
+    return Column(
+      // Text('You CANNOT put other Widgets here'),
+      children: randomList.map((item) => Text(item)).toList(),
+    );
   }
 
   @override
@@ -67,14 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
             Text("$randomNum"),
             Text("Previous Numbers"),
-            ListView.builder(
-              itemCount: randomList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('${randomList[index]}'),
-                );
-              },
-            ),
+            myItmes()
           ],
         ),
       ),
