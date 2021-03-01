@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Home Page test 1'),
+      home: MyHomePage(title: 'Flutter test 1'),
     );
   }
 }
@@ -28,12 +30,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  List randomList = [];
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  getCountries() async {
+    var response =
+        await Dio().get('https://csrng.net/csrng/csrng.php?min=1&max=1000');
+    randomList.add(response.data[0]['random']);
+    print(randomList);
+    return response.data[0]['random'];
   }
 
   @override
@@ -46,20 +50,28 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            ElevatedButton(
+                child: Text(
+                  'Get New Random Number',
+                  style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  getCountries();
+                }),
+            Text("Previous Numbers"),
+            ListView.builder(
+              itemCount: randomList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text('${randomList[index]}'),
+                );
+              },
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }
