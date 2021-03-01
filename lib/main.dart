@@ -31,8 +31,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List randomList = [];
+  var randomNum = 0;
 
-  getCountries() async {
+  getRandomNumber() async {
     var response =
         await Dio().get('https://csrng.net/csrng/csrng.php?min=1&max=1000');
     randomList.add(response.data[0]['random']);
@@ -59,8 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
-                  getCountries();
+                  getRandomNumber();
                 }),
+            Text("$randomNum"),
             Text("Previous Numbers"),
             ListView.builder(
               itemCount: randomList.length,
