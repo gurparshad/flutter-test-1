@@ -31,13 +31,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List randomList = [];
-  var randomNum = 0;
+  var randomNum = "";
 
   getRandomNumber() async {
     var response =
         await Dio().get('https://csrng.net/csrng/csrng.php?min=1&max=1000');
     randomList.add(response.data[0]['random']);
     print(randomList);
+    setState(() {
+      randomNum = response.data[0]['random'].toString();
+    });
     return response.data[0]['random'];
   }
 
