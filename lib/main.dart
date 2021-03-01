@@ -46,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget myItmes() {
     return Column(
-      // Text('You CANNOT put other Widgets here'),
       children: randomList.map((item) => Text(item)).toList(),
     );
   }
